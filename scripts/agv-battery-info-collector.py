@@ -40,6 +40,7 @@ def ModuleInformationCallback(moduleinfo, args):
     fieldName, agvName,host = args
     data={
         "batteryID":moduleinfo.Battery.batteryID,
+        "state":moduleinfo.Battery.state,
         "errorCode":moduleinfo.Battery.errorCode,
         "Voltage":moduleinfo.Battery.Voltage,
         "batteryLevel":moduleinfo.Battery.batteryLevel,

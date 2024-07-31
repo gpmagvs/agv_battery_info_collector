@@ -31,24 +31,10 @@ def post_request(url, endpoint, headers, data):
     return response.status, response_data
 
 def PostBatInfoToServer(batinfo, fieldName, agvName):
-    
-    #http = httplib2.Http()
-    #body=  json.dumps(batinfo)
     headers = {'Content-Type': 'application/json'}
-    
     try:
-	status, response_data = post_request("http://192.168.206.1:5254","/api/AGVBattery?fieldName={}&agvName={}".format(fieldName,agvName),headers,batinfo)
-	print(response_data)
-        #content,response= http.request(
-        #    uri="http://192.168.206.1:5254/api/AGVBattery?fieldName={}&agvName={}".format(fieldName,agvName),
-        #    method="POST",
-        #    headers=headers,
-        #    body=body)
-        
-        #returnObj=json.loads(response) 
-        #if(returnObj["returnCode"] is not True):
-        #    print("Fail",returnObj)
-
+        status, response_data = post_request("http://192.168.206.1:5254","/api/AGVBattery?fieldName={}&agvName={}".format(fieldName,agvName),headers,batinfo)
+        print(response_data)
     except Exception as e:
         rospy.logerr("HTTP request failed: {}".format(e))
         return False
@@ -57,6 +43,7 @@ def ModuleInformationCallback(moduleinfo, args):
     fieldName, agvName = args
     data={
         "batteryID":moduleinfo.Battery.batteryID,
+        "state":moduleinfo.Battery.state,
         "errorCode":moduleinfo.Battery.errorCode,
         "Voltage":moduleinfo.Battery.Voltage,
         "batteryLevel":moduleinfo.Battery.batteryLevel,

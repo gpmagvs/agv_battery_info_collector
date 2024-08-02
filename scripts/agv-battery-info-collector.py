@@ -51,6 +51,7 @@ def ModuleInformationCallback(moduleinfo, args):
         "cycle":moduleinfo.Battery.cycle,
         "chargeTime":moduleinfo.Battery.chargeTime,
         "useTime":moduleinfo.Battery.useTime,
+        "tagNumber":moduleinfo.reader.tagID
         }
     PostBatInfoToServer(data, fieldName, agvName,host)
 

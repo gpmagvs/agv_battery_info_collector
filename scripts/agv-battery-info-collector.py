@@ -30,7 +30,7 @@ def PostBatInfoToServer(batinfo, fieldName, agvName,host):
     headers = {'Content-Type': 'application/json'}
     try:
         status, response_data = post_request("http://{}".format(host),"/api/AGVBattery?fieldName={}&agvName={}".format(fieldName,agvName),headers,batinfo)
-        print(response_data)
+        #print(response_data)
 	
     except Exception as e:
         rospy.logerr("HTTP request failed: {}".format(e))

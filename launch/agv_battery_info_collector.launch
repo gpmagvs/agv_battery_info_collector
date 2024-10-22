@@ -1,0 +1,13 @@
+<launch>
+    <arg name="host" default="192.168.0.3:5254"/> <!-- 伺服器地址和端口，預設為 "192.168.0.3:5254" -->  
+    <arg name="agvName" default="AGV_001"/> <!-- AGV 名稱，預設為 "AGV_001" -->
+    <arg name="fieldName" default="Unknown_Region"/> <!-- 區域名稱，預設為 "Unknown_Region" -->
+    <arg name="pubInterval" default="10"/> <!-- 資料發布間隔（秒），預設為 10 -->
+
+    <node pkg="agv_battery_info_collector" type="agv-battery-info-collector.py" name="battery_info_collector" output="screen">
+        <param name="host" value="$(arg host)"/>
+        <param name="agvName" value="$(arg agvName)"/>
+        <param name="fieldName" value="$(arg fieldName)"/>
+        <param name="pubInterval" value="$(arg pubInterval)"/>
+    </node>
+</launch>

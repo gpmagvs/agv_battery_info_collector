@@ -3,11 +3,12 @@ import rospy
 import http.client
 import socket
 import json
-import argparse
 import threading
 from gpm_msgs.msg import ModuleInformation,BatteryState
 
 latest_battery_data = None
+voltageRatio =1;
+currentRatio =1;
 def post_request(url, endpoint, headers, data):
 
     parsed_url = url.replace('http://', '').replace('https://', '')
@@ -42,14 +43,16 @@ def PostBatInfoToServer(batinfo, fieldName, agvName, host):
         return False
 
 def ModuleInformationCallback(moduleinfo):
+    global voltageRatio
+    global currentRatio
     data = {
         "batteryID": moduleinfo.Battery.batteryID,
         "state": moduleinfo.Battery.state,
         "errorCode": moduleinfo.Battery.errorCode,
-        "Voltage": moduleinfo.Battery.Voltage,
+        "Voltage": moduleinfo.Battery.Voltage * voltageRatio,
         "batteryLevel": moduleinfo.Battery.batteryLevel,
-        "chargeCurrent": moduleinfo.Battery.chargeCurrent,
-        "dischargeCurrent": moduleinfo.Battery.dischargeCurrent,
+        "chargeCurrent": moduleinfo.Battery.chargeCurrent * currentRatio,
+        "dischargeCurrent": moduleinfo.Battery.dischargeCurrent * currentRatio,
         "maxCellTemperature": moduleinfo.Battery.maxCellTemperature,
         "minCellTemperature": moduleinfo.Battery.minCellTemperature,
         "cycle": moduleinfo.Battery.cycle,
@@ -67,12 +70,16 @@ def check_host_connection(host):
     except socket.error:
         return False
 def battery_info_collector():
+    global voltageRatio
+    global currentRatio
     rospy.init_node('battery_info_collector', anonymous=True)
     host = rospy.get_param('~host', 'localhost')
     agvName = rospy.get_param('~agvName', 'AGV1')
     fieldName = rospy.get_param('~fieldName', 'Unknown_Region')
     pubInterval = rospy.get_param('~pubInterval', 10)
-    rospy.loginfo("Starting battery_info_collector with host: {}, agvName: {}, fieldName: {}, pubInterval: {}".format(host, agvName, fieldName, pubInterval))
+    voltageRatio = rospy.get_param('~voltageRatio', 1)
+    currentRatio = rospy.get_param('~currentRatio', 1)
+    rospy.loginfo("Starting battery_info_collector with host: {}, agvName: {}, fieldName: {}, pubInterval: {}, voltageRatio: {}, currentRatio: {}".format(host, agvName, fieldName, pubInterval, voltageRatio, currentRatio))
     
 
     rospy.Subscriber('/module_information', ModuleInformation, ModuleInformationCallback)

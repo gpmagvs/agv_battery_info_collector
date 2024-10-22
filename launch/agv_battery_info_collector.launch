@@ -3,11 +3,15 @@
     <arg name="agvName" default="AGV_001"/> <!-- AGV 名稱，預設為 "AGV_001" -->
     <arg name="fieldName" default="Unknown_Region"/> <!-- 區域名稱，預設為 "Unknown_Region" -->
     <arg name="pubInterval" default="10"/> <!-- 資料發布間隔（秒），預設為 10 -->
+    <arg name="voltageRatio" default="1"/> <!-- 電壓比例，預設為 0.8 -->
+    <arg name="currentRatio" default="1"/> <!-- 電流比例，預設為 0.8 -->
 
     <node pkg="agv_battery_info_collector" type="agv-battery-info-collector.py" name="battery_info_collector" output="screen">
         <param name="host" value="$(arg host)"/>
         <param name="agvName" value="$(arg agvName)"/>
         <param name="fieldName" value="$(arg fieldName)"/>
         <param name="pubInterval" value="$(arg pubInterval)"/>
+        <param name="voltageRatio" value="$(arg voltageRatio)"/>
+        <param name="currentRatio" value="$(arg currentRatio)"/>
     </node>
 </launch>

@@ -91,7 +91,7 @@ def BatteryCellStateCallback(driversState):
         ))
     rospy.loginfo("Latest cell states: {}".format(latest_cell_states))
 
-def ModuleInformationCallback( ):
+def ModuleInformationCallback(moduleinfo):
     global voltageRatio
     global currentRatio
     global latest_cell_states
